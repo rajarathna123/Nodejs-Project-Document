@@ -40,6 +40,7 @@ Nodejs-project repo consists of project code and Dockerfile to create docker ima
 
 
 Phase 2:
+
 Using Terraform I Created a new vpc, subnets, Kubernetes cluster with one nodegroup with min 1 spot machine, max 5 in AWS Cloud
 I Created 3 different namespaces    
           1. dev    
@@ -72,10 +73,15 @@ ECR consists qa:latest image ,Helm chart in the devops repo consists of qa.yaml 
 After pulling the qa:latest image,it will deploy to qa namespace with one replica.
 After that we can check the pod is running healthy and verify it will be accessible from outside world.
 If deployment failed ,slack notifications will be sent slack channel .so that we will be notified .
+
+
+
+
+
+
+
+
 Phase 5:
-
-
-
 Pull the image from ECR (qa:latest) change tag to prod:latest and again push to ECR 
 ECR consists prod:latest image ,Helm chart in the devops repo consists of prod.yaml manifest file ,it will pull the prod:latest image 
 After pulling the prod:latest image,it will deploy to prod namespace with two replica,because we changed replica count to 2 in manifest file i.e prod.yaml
@@ -83,10 +89,11 @@ After that we can check the pod is running healthy and verify it will be accessi
 We are enabled HPA in Prod evvironment (dev.yaml file) (autoscaling)
 When ever cpu stress increased to 70% ,then automatically extra pods will be created (that pods min and max given in prod.yaml file)
 If deployment failed ,slack notifications will be sent slack channel .so that we will be notified.   
+
+
+
+
 Phase 6:
-
-
-
 In kubernetes cluster ,i have installed prometheus and grafana for cluster monitoring(pods,cpu utilization,Ram,memory)
 Nodeport will collect all matrices from kubernetes cluster it will given to prometheus ,prometheus will display all target port matrices.
 Prometheus will display all the target port matrices(default port:9090)
