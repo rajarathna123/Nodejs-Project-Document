@@ -36,12 +36,17 @@ If we want to access our application from outside cluster ,we need to change in 
 Helm chart also consists templates in that we have deployment.yaml in this deployment file ,we need to change containerport to 3000,because our project is running over 3000 port.
 I have wrote  a Dockerfile based on the project code and requirements.
 Nodejs-project repo consists of project code and Dockerfile to create docker image
+
+
+
 Phase 2:
 Using Terraform I Created a new vpc, subnets, Kubernetes cluster with one nodegroup with min 1 spot machine, max 5 in AWS Cloud
 I Created 3 different namespaces    
           1. dev    
           2. qa
           3.prod
+
+
 
 Phase 3:
 I launched one ubuntu instance (t2.medium).
@@ -55,6 +60,12 @@ Stage 1: In the pipeline i configured github project url and username with passw
 Stage 2:After stage 1 ,It will get Dockerfile in this stage to build docker image and it will pushed to ECR repo (dev:latest)
 Stage 3:Helm chart will pull the Image dev:latest from ECR repo (dev.yaml with one replica),it will be deployed to dev namespace using helm chart in kubernetes node .
 Stage 4:If deployment failed ,slack notifications will be configured to slack channel 
+
+
+
+
+
+
 Phase 4:               
 Pull the image from ECR (dev:latest) change tag to qa:latest and again push to ECR 
 ECR consists qa:latest image ,Helm chart in the devops repo consists of qa.yaml manifest file ,it will pull the qa:latest image 
@@ -62,6 +73,9 @@ After pulling the qa:latest image,it will deploy to qa namespace with one replic
 After that we can check the pod is running healthy and verify it will be accessible from outside world.
 If deployment failed ,slack notifications will be sent slack channel .so that we will be notified .
 Phase 5:
+
+
+
 Pull the image from ECR (qa:latest) change tag to prod:latest and again push to ECR 
 ECR consists prod:latest image ,Helm chart in the devops repo consists of prod.yaml manifest file ,it will pull the prod:latest image 
 After pulling the prod:latest image,it will deploy to prod namespace with two replica,because we changed replica count to 2 in manifest file i.e prod.yaml
@@ -70,10 +84,16 @@ We are enabled HPA in Prod evvironment (dev.yaml file) (autoscaling)
 When ever cpu stress increased to 70% ,then automatically extra pods will be created (that pods min and max given in prod.yaml file)
 If deployment failed ,slack notifications will be sent slack channel .so that we will be notified.   
 Phase 6:
+
+
+
 In kubernetes cluster ,i have installed prometheus and grafana for cluster monitoring(pods,cpu utilization,Ram,memory)
 Nodeport will collect all matrices from kubernetes cluster it will given to prometheus ,prometheus will display all target port matrices.
 Prometheus will display all the target port matrices(default port:9090)
 Grafana dashboard will run on 3000(https://local-public-ip:3000)
+
+
+
 Conclusion:
 It was a wonderful learning experience for me while working on this project. 
 This project took me through the various phases of project development and gave me real insight into the world of software engineering.
